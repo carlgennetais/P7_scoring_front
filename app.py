@@ -32,9 +32,12 @@ st.header("All customers stats")
 all_customers_stats = requests.get(BACK_URL + "/customers_stats/").json()
 st.dataframe(all_customers_stats)
 
-# ("/predict/{customer_id}")
 # Predict for one customer
 st.header("Scoring for customer " + str(selectedID))
 predict = requests.get(BACK_URL + "/predict/" + str(selectedID)).json()
-st.write(predict)
-# ("/shap/{customer_id}")
+st.table(predict)
+
+# Shap values
+st.header("Shap values for customer " + str(selectedID))
+shap = requests.get(BACK_URL + "/shap/" + str(selectedID)).json()
+st.write(shap)
