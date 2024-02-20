@@ -33,7 +33,7 @@ with st.sidebar:
 if str(selectedID) == "All":
     # All customers stats
     st.header("All customers stats")
-    all_customers_stats = requests.get("{API_URL}/customers_stats/").json()
+    all_customers_stats = requests.get(f"{API_URL}/customers_stats/").json()
     st.dataframe(all_customers_stats)
     with st.sidebar:
         st.metric("Customer count", len(customer_list) - 1)
