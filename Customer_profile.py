@@ -40,16 +40,19 @@ else:
     st.header(f"Loan status for customer {str(selectedID)}")
     predict = requests.get(f"{API_URL}/predict/{str(selectedID)}").json()
     st.table(predict)
+    # TODO: display loan application result
     st.success("Loan granted", icon="✅")
     st.error("Loan denied", icon="❌")
 
     # Customer profile
     st.header(f"Profile of customer {str(selectedID)}")
     with st.expander("Display full profile"):
+        # TODO: break features into categories for readability (work, house etc)
         customer_profile = requests.get(f"{API_URL}/customers/{str(selectedID)}").json()
         st.dataframe(customer_profile)
 
     # Shap values
+    # TODO: add description
     st.header(f"Shap values for customer {str(selectedID)}")
     shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
     keys = np.fromiter(shap_dict.keys(), dtype=object)
