@@ -1,7 +1,6 @@
 """
 Main Frontend code using streamlit
 """
-# import pickle
 
 import numpy as np
 import requests
@@ -20,10 +19,6 @@ st.set_page_config(
     page_icon="💰",
 )
 st.title("Home Credit Loan Validation")
-
-
-# response = requests.get(API_URL)
-# st.write(response.json()[0])
 
 
 # Choose from customer list
@@ -63,7 +58,5 @@ else:
         shap.bar_plot(
             values,
             feature_names=keys,
-            max_display=20,
         ),
-        height=300,
     )
