@@ -4,10 +4,11 @@ Main Frontend code using streamlit
 # import pickle
 
 import numpy as np
-import pandas as pd
 import requests
 import shap
 import streamlit as st
+from streamlit_shap import st_shap
+
 
 # API params
 API_URL = "https://p7-scoring-back.onrender.com"
@@ -55,16 +56,14 @@ else:
 
     # Shap values
     st.header(f"Shap values for customer {str(selectedID)}")
-    shap_response = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
-    # st.write(shap)
-    shap_dict = shap_response
-    # merge top and bottom into one dict
-    shap_dict["top"].update(shap_dict["bottom"])
-    keys = np.fromiter(shap_dict["top"].keys(), dtype=object)
-    values = np.fromiter(shap_dict["top"].values(), dtype=float)
-    fig = shap.bar_plot(
-        values,
-        feature_names=keys,
-        max_display=20,
+    shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
+    keys = np.fromiter(shap_dict.keys(), dtype=object)
+    values = np.fromiter(shap_dict.values(), dtype=float)
+    st_shap(
+        shap.bar_plot(
+            values,
+            feature_names=keys,
+            max_display=20,
+        ),
+        height=300,
     )
-    st.pyplot(fig=fig)
