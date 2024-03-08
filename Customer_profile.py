@@ -39,10 +39,10 @@ else:
     # Predict for one customer
     st.header(f"Résultat de la demande de prêt {str(selectedID)}")
     predict = requests.get(f"{API_URL}/predict/{str(selectedID)}").json()
-    st.table(predict)
-    # TODO: display loan application result
-    st.success("Prêt accordé", icon="✅")
-    st.error("Prêt refusé", icon="❌")
+    if predict == 1:
+        st.success("Prêt accordé", icon="✅")
+    else:
+        st.error("Prêt refusé", icon="❌")
 
     # Customer profile
     st.header(f"Profil du client {str(selectedID)}")
@@ -53,7 +53,7 @@ else:
 
     # Shap values
     # TODO: add description
-    st.header(f"Critères décisifs pour le client {str(selectedID)}")
+    st.header(f"Critères décisifs pour le prêt du client {str(selectedID)}")
     shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
     keys = np.fromiter(shap_dict.keys(), dtype=object)
     values = np.fromiter(shap_dict.values(), dtype=float)
