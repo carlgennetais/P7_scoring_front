@@ -15,45 +15,45 @@ API_URL = "https://p7-scoring-back.onrender.com"
 
 # Page params
 st.set_page_config(
-    page_title="Home Credit Loan Validation",
+    page_title="Prêt à dépenser",
     page_icon="💰",
 )
-st.title("Home Credit Loan Validation")
+st.title("Prêt à dépenser")
 
 
 # Choose from customer list
 with st.sidebar:
     customer_list = requests.get(f"{API_URL}/customers").json()
-    customer_list.insert(0, "All")
-    selectedID = st.selectbox("Select customer", customer_list)
+    customer_list.insert(0, "Tous")
+    selectedID = st.selectbox("Sélectionner un client", customer_list)
 
-if str(selectedID) == "All":
+if str(selectedID) == "Tous":
     # All customers stats
-    st.header("All customers stats")
+    st.header("Statistiques sur l'ensemble des clients")
     all_customers_stats = requests.get(f"{API_URL}/customers_stats/").json()
     st.dataframe(all_customers_stats)
     with st.sidebar:
-        st.metric("Customer count", len(customer_list) - 1)
+        st.metric("Nombre de clients", len(customer_list) - 1)
 
 else:
     # Predict for one customer
-    st.header(f"Loan status for customer {str(selectedID)}")
+    st.header(f"Résultat de la demande de prêt {str(selectedID)}")
     predict = requests.get(f"{API_URL}/predict/{str(selectedID)}").json()
     st.table(predict)
     # TODO: display loan application result
-    st.success("Loan granted", icon="✅")
-    st.error("Loan denied", icon="❌")
+    st.success("Prêt accordé", icon="✅")
+    st.error("Prêt refusé", icon="❌")
 
     # Customer profile
-    st.header(f"Profile of customer {str(selectedID)}")
-    with st.expander("Display full profile"):
+    st.header(f"Profil du client {str(selectedID)}")
+    with st.expander("Afficher le profil complet"):
         # TODO: break features into categories for readability (work, house etc)
         customer_profile = requests.get(f"{API_URL}/customers/{str(selectedID)}").json()
         st.dataframe(customer_profile)
 
     # Shap values
     # TODO: add description
-    st.header(f"Shap values for customer {str(selectedID)}")
+    st.header(f"Critères décisifs pour le client {str(selectedID)}")
     shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
     keys = np.fromiter(shap_dict.keys(), dtype=object)
     values = np.fromiter(shap_dict.values(), dtype=float)
