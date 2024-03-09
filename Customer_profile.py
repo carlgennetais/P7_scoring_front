@@ -26,8 +26,8 @@ def dict_to_exp(dico: dict) -> shap._explanation.Explanation:
 
 
 # API params
-# API_URL = "https://p7-scoring-back.onrender.com"
-API_URL = "http://127.0.0.1:8000"
+API_URL = "https://p7-scoring-back.onrender.com"
+# API_URL = "http://127.0.0.1:8000"
 
 # Page params
 st.set_page_config(
