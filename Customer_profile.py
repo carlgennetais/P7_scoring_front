@@ -3,10 +3,25 @@ Main Frontend code using streamlit
 """
 
 import numpy as np
+import pandas as pd
 import requests
 import shap
 import streamlit as st
 from streamlit_shap import st_shap
+
+
+def dict_to_exp(dico: dict) -> shap._explanation.Explanation:
+    """
+    Convert dict to Shap explanation
+    """
+    return shap.Explanation(
+        values=np.array(list(dico["values"].values())),
+        base_values=dico["base_values"],
+        data=np.array(dico["data"]),
+        display_data=pd.Series(list(dico["values"].values())),
+        # values=np.array(dico["values"]),
+        # display_data=pd.Series(dico["display_data"]),
+    )
 
 
 # API params
@@ -55,11 +70,5 @@ else:
     # TODO: add description
     st.header(f"Critères décisifs pour le prêt du client {str(selectedID)}")
     shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
-    keys = np.fromiter(shap_dict.keys(), dtype=object)
-    values = np.fromiter(shap_dict.values(), dtype=float)
-    st_shap(
-        shap.bar_plot(
-            values,
-            feature_names=keys,
-        ),
-    )
+    exp = dict_to_exp(shap_dict)
+    st_shap(shap.plots.waterfall(exp))
