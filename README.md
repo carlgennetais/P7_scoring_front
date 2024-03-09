@@ -8,7 +8,7 @@ Web hosted dashboard displaying loan application results and metrics to interpre
 
 1. [Machine learning](https://github.com/carlgennetais/P7_scoring_ML)
 2. [Back: API built with FastAPI](https://github.com/carlgennetais/P7_scoring_back)
-3. [Front: Dashboard built with Streamlit)](https://github.com/carlgennetais/P7_scoring_front/)
+3. [Front: Dashboard built with Streamlit](https://github.com/carlgennetais/P7_scoring_front/)
 
 ## Usage
 Visit the live URL : <https://p7-carl-demo.streamlit.app/>
@@ -18,4 +18,8 @@ Visit the live URL : <https://p7-carl-demo.streamlit.app/>
 pip install -r requirements.txt
 ```
 ## Screenshots
-<!--TODO: screenshots -->
+
+![](./img/homepage.png)
+![](./img/example_granted.png)
+![](./img/shap_example_1.png)
+![](./img/shap_example_2.png)
