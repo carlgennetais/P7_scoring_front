@@ -8,6 +8,9 @@ import requests
 import shap
 import streamlit as st
 from streamlit_shap import st_shap
+import seaborn as sns
+
+sns.set_theme()
 
 
 def dict_to_exp(dico: dict) -> shap._explanation.Explanation:
@@ -17,16 +20,14 @@ def dict_to_exp(dico: dict) -> shap._explanation.Explanation:
     return shap.Explanation(
         values=np.array(list(dico["values"].values())),
         base_values=dico["base_values"],
-        data=np.array(dico["data"]),
-        display_data=pd.Series(list(dico["values"].values())),
-        # values=np.array(dico["values"]),
-        # display_data=pd.Series(dico["display_data"]),
+        data=np.array(list(dico["data"].values())),
+        display_data=pd.Series(dico["display_data"]),
     )
 
 
 # API params
-API_URL = "https://p7-scoring-back.onrender.com"
-# API_URL = "http://127.0.0.1:8000"
+# API_URL = "https://p7-scoring-back.onrender.com"
+API_URL = "http://127.0.0.1:8000"
 
 # Page params
 st.set_page_config(
@@ -53,8 +54,8 @@ if str(selectedID) == "Tous":
 else:
     # Predict for one customer
     st.header(f"Résultat de la demande de prêt {str(selectedID)}")
-    predict = requests.get(f"{API_URL}/predict/{str(selectedID)}").json()
-    if predict == 1:
+    predict = requests.get(f"{API_URL}/predict/{str(selectedID)}").json()["loan_result"]
+    if predict == 0:
         st.success("Prêt accordé", icon="✅")
     else:
         st.error("Prêt refusé", icon="❌")
@@ -71,4 +72,4 @@ else:
     st.header(f"Critères décisifs pour le prêt du client {str(selectedID)}")
     shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
     exp = dict_to_exp(shap_dict)
-    st_shap(shap.plots.waterfall(exp))
+    st_shap(shap.plots.waterfall(exp), height=600, width=1200)
