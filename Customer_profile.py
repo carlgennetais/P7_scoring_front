@@ -17,16 +17,14 @@ def dict_to_exp(dico: dict) -> shap._explanation.Explanation:
     return shap.Explanation(
         values=np.array(list(dico["values"].values())),
         base_values=dico["base_values"],
-        data=np.array(dico["data"]),
-        display_data=pd.Series(list(dico["values"].values())),
-        # values=np.array(dico["values"]),
-        # display_data=pd.Series(dico["display_data"]),
+        data=np.array(list(dico["data"].values())),
+        display_data=pd.Series(dico["display_data"]),
     )
 
 
 # API params
-API_URL = "https://p7-scoring-back.onrender.com"
-# API_URL = "http://127.0.0.1:8000"
+# API_URL = "https://p7-scoring-back.onrender.com"
+API_URL = "http://127.0.0.1:8000"
 
 # Page params
 st.set_page_config(
