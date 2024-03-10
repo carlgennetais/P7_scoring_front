@@ -68,7 +68,7 @@ else:
         st.dataframe(customer_profile)
 
     # Shap values
-    # TODO: add description
+    # TODO: add feature dictionnary
     st.header(f"Critères décisifs pour le prêt du client {str(selectedID)}")
     shap_dict = requests.get(f"{API_URL}/shap/{str(selectedID)}").json()
     exp = dict_to_exp(shap_dict)
